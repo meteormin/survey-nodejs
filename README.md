@@ -20,9 +20,9 @@
 
 ## 개발 환경
 
-<img src="https://img.shields.io/badge/PHP_8.1-777BB4?logo=php&logoColor=white">
+<img src="https://img.shields.io/badge/Node.JS_v16.14.0-339933?logo=node.js&logoColor=white">
 
-<img src="https://img.shields.io/badge/Laravel_9-FF2D20?logo=laravel&logoColor=white">
+<img src="https://img.shields.io/badge/Express_4-000000?logo=express&logoColor=white">
 
 <img src="https://img.shields.io/badge/React_17-61DAFB?logo=react&logoColor=white">
 
