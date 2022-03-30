@@ -3,10 +3,10 @@
 /**
  * Module dependencies.
  */
-import app from "../app";
+import Application from "../app";
+import express from "express";
 import debugLib from "debug";
 import http from "http";
-import config from "../configs";
 
 const debug = debugLib("survey-server:server");
 
@@ -14,22 +14,28 @@ const debug = debugLib("survey-server:server");
  * Get port from environment and store in Express.
  */
 
-const port = normalizePort(config.app.port || "3000");
-app.set("port", port);
+const wrapper = new Application(express());
+
+const appConfig = wrapper.make('config.app');
+
+const port = normalizePort(appConfig.port || "3000");
+// app.set("port", port);
+
+wrapper.app.set("port", port);
 
 /**
  * Create HTTP server.
  */
 
-const server = http.createServer(app);
+const server = http.createServer(wrapper.app);
 
 /**
  * Listen on provided port, on all network interfaces.
  */
 
 server.listen(port, () => {
-    console.log(`${config.app.name} Start...`);
-    console.log(`Application info`, config.app);
+    console.log(`${appConfig.name} Start...`);
+    console.log(`Application info`, appConfig);
 });
 
 server.on("listening", onListening);

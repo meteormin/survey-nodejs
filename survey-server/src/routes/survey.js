@@ -1,26 +1,30 @@
 import express from "express";
 import SurveyController from "../controllers/surveyController";
 import SurveyResultController from "../controllers/surveyResultController";
-import {container} from "../utils/register";
-
-
-/**
- * @var {SurveyController} surveyController
- */
-const surveyController = container().get(SurveyController.name);
-
-/**
- * @var {SurveyResultController} surveyResultController
- */
-const surveyResultController = container().get(SurveyResultController.name);
 
 const router = express.Router();
+/**
+ *
+ * @param {Container} container
+ * @return {Router}
+ */
+export default (container) => {
+    /**
+     * @var {SurveyController} surveyController
+     */
+    const surveyController = container.make(SurveyController.name);
 
-router.get("/", surveyController.index);
-router.get("/:surveyId", surveyController.findById);
-router.post("/", surveyController.create);
-router.post('/:surveyId/result', surveyResultController.create);
-router.get('/:surveyId/result', surveyResultController.findBySurveyId);
-router.get('/:surveyId/result/:resultId', surveyResultController.findById);
+    /**
+     * @var {SurveyResultController} surveyResultController
+     */
+    const surveyResultController = container.make(SurveyResultController.name);
 
-export default router;
+    router.get("/", surveyController.index);
+    router.get("/:surveyId", surveyController.findById);
+    router.post("/", surveyController.create);
+    router.post('/:surveyId/result', surveyResultController.create);
+    router.get('/:surveyId/result', surveyResultController.findBySurveyId);
+    router.get('/:surveyId/result/:resultId', surveyResultController.findById);
+
+    return router;
+}

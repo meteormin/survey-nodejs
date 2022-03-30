@@ -1,22 +1,29 @@
 import express from "express";
-import path from "path";
-import cookieParser from "cookie-parser";
-import logger from "morgan";
-import cors from "cors";
-import indexRouter from "./routes/index";
-import surveyRouter from "./routes/survey";
+import Container from './utils/container';
+import * as register from './utils/register';
 
-const app = express();
+class Application extends Container {
+    constructor(app, dependency = {}) {
+        super(dependency);
 
-app.use(logger("dev"));
-app.use(express.json());
-app.use(express.urlencoded({extended: false}));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "../public")));
-app.use(cors());
+        if (!app instanceof express) {
+            throw new Error("app is not express");
+        }
 
-// routes
-app.use("/", indexRouter);
-app.use("/api/survey", surveyRouter);
+        this._app = app;
+        this.bootstrap();
+    }
 
-export default app;
+    get app() {
+        return this._app;
+    }
+
+    bootstrap() {
+        register.containerRegister(this);
+        register.middlewareRegister(this);
+        register.routerRegister(this);
+    }
+
+}
+
+export default Application;
